@@ -2,3 +2,5 @@
 Trabalho de PWEB 2 com grupo: Naiana e Francisco das Chagas
 
 Vamos tentar fazer com Python, FastAPI + SQLAlchemy + Alembic.
+
+dependencias: cd "C:SUA PASTATrabalho-Final-PWEB-2"; npm install express bcryptjs jsonwebtoken dotenv zod cors; npm install -D nodemon
