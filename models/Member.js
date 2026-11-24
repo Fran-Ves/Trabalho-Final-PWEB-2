@@ -48,6 +48,22 @@ class Member {
         `).get(id);
     }
 
+    static findByUserId(userId) {
+        return db.prepare(`
+            SELECT
+                members.id,
+                members.name,
+                members.phone,
+                members.birth_date,
+                members.created_at,
+                users.email
+            FROM members
+            INNER JOIN users
+                ON members.user_id = users.id
+            WHERE members.user_id = ?
+        `).get(userId);
+    }
+
 }
 
 module.exports = Member;

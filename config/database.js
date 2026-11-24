@@ -42,7 +42,65 @@ db.exec(`
             REFERENCES users(id)
             ON DELETE CASCADE
     );
+
+    CREATE TABLE IF NOT EXISTS workouts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        member_id INTEGER NOT NULL,
+        trainer_id INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        description TEXT,
+        exercises TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS checkins (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        member_id INTEGER NOT NULL,
+        checkin_date TEXT NOT NULL,
+        checkin_time TEXT NOT NULL,
+
+        FOREIGN KEY (member_id)
+            REFERENCES members(id)
+            ON DELETE CASCADE
+    );
 `);
+
+// Migração: se já existir uma versão antiga da tabela, ajusta os campos
+const checkinColumns = db.prepare('PRAGMA table_info(checkins)').all();
+const checkinColumnNames = checkinColumns.map(column => column.name);
+const needsCheckinMigration =
+    checkinColumns.length > 0 &&
+    (!checkinColumnNames.includes('checkin_date') ||
+     !checkinColumnNames.includes('checkin_time') ||
+     checkinColumnNames.includes('workout_id'));
+
+if (needsCheckinMigration) {
+    db.transaction(() => {
+        db.exec(`
+            CREATE TABLE checkins_new (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                member_id INTEGER NOT NULL,
+                checkin_date TEXT NOT NULL,
+                checkin_time TEXT NOT NULL,
+
+                FOREIGN KEY (member_id)
+                    REFERENCES members(id)
+                    ON DELETE CASCADE
+            );
+
+            INSERT INTO checkins_new (id, member_id, checkin_date, checkin_time)
+            SELECT
+                id,
+                member_id,
+                COALESCE(date(checkin_time), date('now', 'localtime')),
+                COALESCE(time(checkin_time), time('now', 'localtime'))
+            FROM checkins;
+
+            DROP TABLE checkins;
+            ALTER TABLE checkins_new RENAME TO checkins;
+        `);
+    })();
+}
 
 console.log('Banco de dados SQLite conectado!');
 

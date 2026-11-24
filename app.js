@@ -6,6 +6,8 @@ const errorMiddleware = require('./middlewares/errorMiddleware');
 
 const authRoutes = require('./routes/authRoutes');
 const memberRoutes = require('./routes/memberRoutes');
+const checkinRoutes = require('./routes/checkinRoutes');
+const workoutRoutes = require('./routes/workoutRoutes');
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.get('/', (req, res) => {
 // Rotas principais
 app.use('/api/auth', authRoutes);
 app.use('/api/members', memberRoutes);
+app.use('/api/checkins', checkinRoutes);
+app.use('/api/workouts', workoutRoutes);
 
 // Rota não encontrada
 app.use((req, res, next) => {
