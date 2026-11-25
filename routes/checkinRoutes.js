@@ -5,12 +5,15 @@ const router = express.Router();
 const checkinController = require('../controllers/checkinController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const roleMiddleware = require('../middlewares/roleMiddleware');
+const validationMiddleware = require('../middlewares/validationMiddleware');
+const { checkinSchema } = require('../validators/checkinValidator');
 
 // Membro autenticado registra seu próprio check-in
 router.post(
     '/',
     authMiddleware,
     roleMiddleware('member'),
+    validationMiddleware(checkinSchema),
     checkinController.create
 );
 

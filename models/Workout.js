@@ -49,6 +49,14 @@ class Workout {
         `).all();
     }
 
+    static findByMemberId(memberId) {
+        return db.prepare(`
+            ${SELECT_WORKOUT}
+            WHERE workouts.member_id = ?
+            ORDER BY workouts.created_at DESC, workouts.id DESC
+        `).all(memberId);
+    }
+
     static findById(id) {
         return db.prepare(`
             ${SELECT_WORKOUT}

@@ -13,10 +13,15 @@ function generateToken(user) {
         },
         process.env.JWT_SECRET,
         {
+            algorithm: 'HS256',
             expiresIn: '2h'
         }
     );
 }
+
+// Hash falso usado quando o e-mail não existe: faz o login levar o mesmo tempo
+// com e-mail inexistente e com senha errada (evita enumeração por tempo de resposta)
+const DUMMY_HASH = bcrypt.hashSync('senha-falsa-para-igualar-tempo', 12);
 
 async function register(data) {
 
@@ -66,6 +71,8 @@ async function login(data) {
     const user = User.findByEmail(data.email);
 
     if (!user) {
+        await bcrypt.compare(data.password, DUMMY_HASH);
+
         const error = new Error('E-mail ou senha incorretos');
         error.status = 401;
         throw error;

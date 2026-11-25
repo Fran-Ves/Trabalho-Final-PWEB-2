@@ -1,3 +1,5 @@
+const securityLog = require('../utils/securityLog');
+
 function roleMiddleware(...allowedRoles) {
 
     return (req, res, next) => {
@@ -9,6 +11,8 @@ function roleMiddleware(...allowedRoles) {
         }
 
         if (!allowedRoles.includes(req.user.role)) {
+            securityLog('ROLE_DENIED', req, { allowedRoles });
+
             return res.status(403).json({
                 error: 'Acesso negado'
             });

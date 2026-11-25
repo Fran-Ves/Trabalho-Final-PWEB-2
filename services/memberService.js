@@ -57,8 +57,22 @@ function findById(id) {
     return member;
 }
 
+function findByUserId(userId) {
+
+    const member = Member.findByUserId(userId);
+
+    if (!member) {
+        const error = new Error('Membro não encontrado para o usuário autenticado');
+        error.status = 404;
+        throw error;
+    }
+
+    return member;
+}
+
 module.exports = {
     create,
     list,
-    findById
+    findById,
+    findByUserId
 };

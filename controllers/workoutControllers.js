@@ -30,7 +30,24 @@ function create(req, res, next) {
 function list(req, res, next) {
     try {
 
-        const workouts = workoutService.list();
+        const { workouts, cacheHit } = workoutService.list();
+
+        res.setHeader('X-Cache', cacheHit ? 'HIT' : 'MISS');
+
+        return res.status(200).json({
+            total: workouts.length,
+            workouts
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+function listMine(req, res, next) {
+    try {
+
+        const workouts = workoutService.listMine(req.user);
 
         return res.status(200).json({
             total: workouts.length,
@@ -95,6 +112,7 @@ function remove(req, res, next) {
 module.exports = {
     create,
     list,
+    listMine,
     findById,
     update,
     remove

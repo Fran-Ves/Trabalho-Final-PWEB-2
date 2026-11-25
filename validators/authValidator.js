@@ -1,14 +1,16 @@
 const { z } = require('zod');
+const passwordRule = require('./passwordRule');
 
 const registerSchema = z.object({
     name: z.string()
-        .min(3, 'O nome deve ter pelo menos 3 caracteres'),
+        .min(3, 'O nome deve ter pelo menos 3 caracteres')
+        .max(100, 'O nome deve ter no máximo 100 caracteres'),
 
     email: z.string()
-        .email('Informe um e-mail válido'),
+        .email('Informe um e-mail válido')
+        .max(254, 'E-mail muito longo'),
 
-    password: z.string()
-        .min(8, 'A senha deve ter pelo menos 8 caracteres'),
+    password: passwordRule,
 
     phone: z.string()
         .max(20, 'Telefone muito longo')

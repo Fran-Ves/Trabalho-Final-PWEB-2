@@ -46,8 +46,23 @@ function findById(req, res, next) {
     }
 }
 
+function me(req, res, next) {
+    try {
+
+        const member = memberService.findByUserId(req.user.id);
+
+        return res.status(200).json({
+            member
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     create,
     list,
-    findById
+    findById,
+    me
 };

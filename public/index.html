@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academia | Painel</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Tela de acesso -->
+  <div id="auth-screen" class="auth">
+    <section class="auth-card" aria-labelledby="auth-title">
+      <h1 id="auth-title">Academia</h1>
+      <p class="lead">Treinos, membros e frequência em um só painel.</p>
+
+      <div class="tabs" role="tablist" aria-label="Acesso">
+        <button type="button" role="tab" id="tab-login" aria-selected="true">Entrar</button>
+        <button type="button" role="tab" id="tab-register" aria-selected="false">Criar conta</button>
+      </div>
+
+      <form id="login-form" class="form" autocomplete="on">
+        <label class="field"><span>E-mail</span>
+          <input name="email" type="email" required autocomplete="username"></label>
+        <label class="field"><span>Senha</span>
+          <input name="password" type="password" required autocomplete="current-password"></label>
+        <p class="form-error" id="login-error" role="alert" hidden></p>
+        <button class="btn primary" type="submit">Entrar</button>
+      </form>
+
+      <form id="register-form" class="form" hidden>
+        <label class="field"><span>Nome completo</span>
+          <input name="name" required minlength="3" maxlength="100" autocomplete="name"></label>
+        <label class="field"><span>E-mail</span>
+          <input name="email" type="email" required autocomplete="email"></label>
+        <label class="field"><span>Senha (8 a 72 caracteres)</span>
+          <input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+        <div class="row">
+          <label class="field"><span>Telefone</span>
+            <input name="phone" maxlength="20" autocomplete="tel"></label>
+          <label class="field"><span>Nascimento</span>
+            <input name="birthDate" type="date" autocomplete="bday"></label>
+        </div>
+        <p class="form-error" id="register-error" role="alert" hidden></p>
+        <button class="btn primary" type="submit">Criar conta de aluno</button>
+      </form>
+
+      <p class="hint">Treinadores e administradores são cadastrados pela academia.</p>
+    </section>
+  </div>
+
+  <!-- Aplicação -->
+  <div id="app" class="app" hidden>
+    <aside class="sidebar">
+      <div class="brand">Academia</div>
+      <nav id="nav" aria-label="Principal"></nav>
+      <div class="who">
+        <span id="who-email" class="who-email"></span>
+        <span id="who-role" class="tape"></span>
+        <button id="logout" class="btn ghost light" type="button">Sair</button>
+      </div>
+    </aside>
+    <main id="content" tabindex="-1"></main>
+  </div>
+
+  <!-- Faixa de status: mostra load balancing e cache funcionando -->
+  <footer id="statusbar" class="statusbar" aria-live="polite">
+    <span>Atendido por <strong id="st-instance">-</strong></span>
+    <span>Réplicas vistas: <strong id="st-seen">-</strong></span>
+    <span>Cache da lista de treinos: <strong id="st-cache">-</strong></span>
+    <span id="st-last" class="st-last"></span>
+  </footer>
+
+  <dialog id="dialog" aria-modal="true"></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

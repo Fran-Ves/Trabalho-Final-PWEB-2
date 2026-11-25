@@ -30,6 +30,15 @@ router.get(
     workoutController.list
 );
 
+// Treinos do próprio membro autenticado (extra, para o painel do aluno).
+// Precisa vir antes de '/:id'.
+router.get(
+    '/mine',
+    authMiddleware,
+    roleMiddleware('member'),
+    workoutController.listMine
+);
+
 // Consulta de um treino: admin, trainer e o próprio membro do treino
 // (a verificação de "membro autorizado" é feita no service)
 router.get(

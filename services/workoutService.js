@@ -1,6 +1,15 @@
 const Workout = require('../models/Workout');
 const Member = require('../models/Member');
 const User = require('../models/User');
+const cache = require('../utils/cache');
+
+// Cache da listagem completa de treinos (GET /api/workouts)
+const LIST_CACHE_KEY = 'workouts:list';
+
+// Qualquer escrita invalida a listagem em cache
+function invalidateListCache() {
+    cache.delete(LIST_CACHE_KEY);
+}
 
 function createError(message, status) {
     const error = new Error(message);
@@ -66,11 +75,36 @@ function create(user, data) {
         data.exercises
     );
 
+    invalidateListCache();
+
     return Workout.findById(workoutId);
 }
 
+// Retorna { workouts, cacheHit } para o controller informar HIT/MISS no header
 function list() {
-    return Workout.findAll();
+
+    const cached = cache.get(LIST_CACHE_KEY);
+
+    if (cached) {
+        return { workouts: cached, cacheHit: true };
+    }
+
+    const workouts = Workout.findAll();
+    cache.set(LIST_CACHE_KEY, workouts);
+
+    return { workouts, cacheHit: false };
+}
+
+// Treinos do membro autenticado (não passa pelo cache da listagem geral)
+function listMine(user) {
+
+    const member = Member.findByUserId(user.id);
+
+    if (!member) {
+        throw createError('Membro não encontrado para o usuário autenticado', 404);
+    }
+
+    return Workout.findByMemberId(member.id);
 }
 
 function findById(user, id) {
@@ -130,6 +164,8 @@ function update(user, id, data) {
         data.exercises !== undefined ? data.exercises : workout.exercises
     );
 
+    invalidateListCache();
+
     return Workout.findById(id);
 }
 
@@ -140,11 +176,14 @@ function remove(id) {
     if (!deleted) {
         throw createError('Treino não encontrado', 404);
     }
+
+    invalidateListCache();
 }
 
 module.exports = {
     create,
     list,
+    listMine,
     findById,
     update,
     remove

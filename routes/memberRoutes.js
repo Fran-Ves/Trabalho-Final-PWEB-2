@@ -28,6 +28,14 @@ router.get(
     memberController.list
 );
 
+// Perfil do próprio membro autenticado. Precisa vir antes de '/:id'.
+router.get(
+    '/me',
+    authMiddleware,
+    roleMiddleware('member'),
+    memberController.me
+);
+
 // Consulta de um membro específico talvez depois mudar
 router.get(
     '/:id',
