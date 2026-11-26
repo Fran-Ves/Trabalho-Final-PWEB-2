@@ -11,7 +11,6 @@ const validationMiddleware = require('../middlewares/validationMiddleware');
 
 const { memberSchema } = require('../validators/memberValidator');
 
-// Cadastro de membros pra ver se precisa de mais algo
 router.post(
     '/',
     authMiddleware,
@@ -20,7 +19,6 @@ router.post(
     memberController.create
 );
 
-// Consulta de membros acho que isso já dá não acho que ele vai pegar otimização como topico
 router.get(
     '/',
     authMiddleware,
@@ -28,7 +26,6 @@ router.get(
     memberController.list
 );
 
-// Perfil do próprio membro autenticado. Precisa vir antes de '/:id'.
 router.get(
     '/me',
     authMiddleware,
@@ -36,7 +33,6 @@ router.get(
     memberController.me
 );
 
-// Consulta de um membro específico talvez depois mudar
 router.get(
     '/:id',
     authMiddleware,

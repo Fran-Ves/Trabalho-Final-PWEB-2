@@ -3,10 +3,8 @@ const Member = require('../models/Member');
 const User = require('../models/User');
 const cache = require('../utils/cache');
 
-// Cache da listagem completa de treinos (GET /api/workouts)
 const LIST_CACHE_KEY = 'workouts:list';
 
-// Qualquer escrita invalida a listagem em cache
 function invalidateListCache() {
     cache.delete(LIST_CACHE_KEY);
 }
@@ -17,14 +15,10 @@ function createError(message, status) {
     return error;
 }
 
-// O validator aceita camelCase e snake_case; aqui normaliza os dois
 function pick(data, camel, snake) {
     return data[camel] !== undefined ? data[camel] : data[snake];
 }
 
-// Define quem é o treinador responsável pelo treino.
-// - trainer: sempre ele mesmo (não pode atribuir o treino a outra pessoa)
-// - admin: pode informar um treinador; se não informar, fica com o próprio admin
 function resolveTrainerId(user, requestedTrainerId) {
 
     if (user.role === 'trainer') {
@@ -80,7 +74,6 @@ function create(user, data) {
     return Workout.findById(workoutId);
 }
 
-// Retorna { workouts, cacheHit } para o controller informar HIT/MISS no header
 function list() {
 
     const cached = cache.get(LIST_CACHE_KEY);
@@ -95,7 +88,6 @@ function list() {
     return { workouts, cacheHit: false };
 }
 
-// Treinos do membro autenticado (não passa pelo cache da listagem geral)
 function listMine(user) {
 
     const member = Member.findByUserId(user.id);
@@ -115,7 +107,6 @@ function findById(user, id) {
         throw createError('Treino não encontrado', 404);
     }
 
-    // Membro só pode consultar os próprios treinos
     if (user.role === 'member') {
         const member = Member.findByUserId(user.id);
 
@@ -135,7 +126,6 @@ function update(user, id, data) {
         throw createError('Treino não encontrado', 404);
     }
 
-    // Treinador só pode alterar os treinos pelos quais é responsável
     if (user.role === 'trainer' && workout.trainer_id !== user.id) {
         throw createError('Acesso negado', 403);
     }

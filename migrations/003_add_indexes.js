@@ -1,5 +1,3 @@
-// Índices para as consultas mais frequentes (performance).
-
 module.exports.up = (db) => {
     db.exec(`
         CREATE INDEX IF NOT EXISTS idx_workouts_member_id

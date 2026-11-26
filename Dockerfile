@@ -1,4 +1,4 @@
-# ---- Estágio 1: instala dependências (com ferramentas de build p/ better-sqlite3) ----
+
 FROM node:22-bookworm-slim AS build
 WORKDIR /app
 RUN apt-get update \
@@ -7,7 +7,6 @@ RUN apt-get update \
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# ---- Estágio 2: imagem final enxuta, sem ferramentas de build, usuário não-root ----
 FROM node:22-bookworm-slim
 ENV NODE_ENV=production \
     PORT=3000 \

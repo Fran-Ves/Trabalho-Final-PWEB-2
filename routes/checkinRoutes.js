@@ -8,7 +8,6 @@ const roleMiddleware = require('../middlewares/roleMiddleware');
 const validationMiddleware = require('../middlewares/validationMiddleware');
 const { checkinSchema } = require('../validators/checkinValidator');
 
-// Membro autenticado registra seu próprio check-in
 router.post(
     '/',
     authMiddleware,
@@ -17,7 +16,6 @@ router.post(
     checkinController.create
 );
 
-// Administradores e treinadores consultam todos os check-ins
 router.get(
     '/',
     authMiddleware,
@@ -25,8 +23,6 @@ router.get(
     checkinController.list
 );
 
-// Administradores e treinadores podem consultar qualquer membro;
-// um membro só pode consultar o próprio histórico.
 router.get(
     '/:memberId',
     authMiddleware,

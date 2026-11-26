@@ -1,6 +1,3 @@
-// Testes de integração da API (node:test). Rodam com: npm test
-// Usam um banco SQLite temporário e não alteram o banco real.
-
 const os = require('os');
 const path = require('path');
 const fs = require('fs');
@@ -68,7 +65,6 @@ after(() => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
 });
 
-// ---------------------------------------------------------------- infraestrutura
 
 test('migrações registradas e /health responde com a instância', async () => {
     const versions = db.prepare('SELECT version FROM schema_migrations ORDER BY version').all();
@@ -98,7 +94,6 @@ test('erros: JSON inválido => 400 padronizado, rota inexistente => 404, sem sta
     assert.ok(!JSON.stringify(nf.data).includes('at '));
 });
 
-// ---------------------------------------------------------------- autenticação / senha
 
 test('login: credenciais erradas => 401 genérico; senha > 72 bytes rejeitada no cadastro', async () => {
     const wrong = await call('POST', '/api/auth/login', null, { email: 'admin@t.com', password: 'errada123' });
@@ -118,7 +113,6 @@ test('JWT com algoritmo diferente de HS256 é recusado', async () => {
     assert.equal(r.status, 401);
 });
 
-// ---------------------------------------------------------------- sanitização
 
 test('sanitização: remove tags HTML, faz trim e preserva a senha como digitada', async () => {
     const r = await call('POST', '/api/auth/register', null, {
@@ -143,7 +137,6 @@ test('sanitização: __proto__ no corpo é descartado', async () => {
     assert.equal(({}).role, undefined);
 });
 
-// ---------------------------------------------------------------- treinos (permissões)
 
 let w1, w2;
 
@@ -196,7 +189,6 @@ test('PUT /api/workouts/:id: só admin ou trainer responsável', async () => {
     assert.equal((await call('PUT', `/api/workouts/${w1.id}`, tokens.admin, { trainerId: 3 })).status, 200);
 });
 
-// ---------------------------------------------------------------- cache
 
 test('cache: MISS -> HIT -> invalidado por POST, PUT e DELETE', async () => {
     const list = () => call('GET', '/api/workouts', tokens.t1);
@@ -235,7 +227,6 @@ test('DELETE /api/workouts/:id: somente admin', async () => {
     assert.equal((await call('DELETE', `/api/workouts/${w2.id}`, tokens.admin)).status, 404);
 });
 
-// ---------------------------------------------------------------- membros e check-ins
 
 test('GET /api/members/me e check-ins do próprio membro', async () => {
     const me = await call('GET', '/api/members/me', tokens.m1);

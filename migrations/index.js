@@ -1,7 +1,3 @@
-// Mecanismo de migrações versionadas.
-// Cada arquivo NNN_nome.js exporta { up(db) } e roda uma única vez, em ordem.
-// As versões aplicadas ficam registradas na tabela schema_migrations.
-
 const fs = require('fs');
 const path = require('path');
 
@@ -48,7 +44,6 @@ function run(db) {
             console.log(`Migração aplicada: ${name}`);
 
         } catch (error) {
-            // Outra réplica pode ter aplicado a mesma migração ao mesmo tempo
             if (appliedVersions(db).has(version)) continue;
             throw error;
         }

@@ -7,7 +7,6 @@ const Member = require('../models/Member');
 
 async function create(data) {
 
-    // Verifica se o e-mail já existe já que é regra de negocio
     if (User.findByEmail(data.email)) {
         const error = new Error('E-mail já cadastrado');
         error.status = 409;
@@ -16,7 +15,6 @@ async function create(data) {
 
     const passwordHash = await bcrypt.hash(data.password, 12);
 
-    // Cria os dois registros atomicamente pra deixar o banco sem fazer operação desncessária
     const transaction = db.transaction(() => {
 
         const userId = User.create(

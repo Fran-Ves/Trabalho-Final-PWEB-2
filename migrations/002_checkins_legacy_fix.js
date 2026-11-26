@@ -1,6 +1,3 @@
-// Ajusta bancos antigos cuja tabela checkins usava workout_id / checkin_time único.
-// Em bancos novos não faz nada.
-
 module.exports.up = (db) => {
 
     const columns = db.prepare('PRAGMA table_info(checkins)').all()

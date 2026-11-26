@@ -1,4 +1,3 @@
-// Aplica as migrações pendentes e lista as versões já aplicadas.
 require('dotenv').config();
 
 const db = require('../config/database');

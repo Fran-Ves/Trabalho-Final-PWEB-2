@@ -13,7 +13,6 @@ const {
     workoutUpdateSchema
 } = require('../validators/workoutValidator');
 
-// Cadastro de treino: admin e trainer
 router.post(
     '/',
     authMiddleware,
@@ -22,7 +21,6 @@ router.post(
     workoutController.create
 );
 
-// Listagem de treinos: admin e trainer
 router.get(
     '/',
     authMiddleware,
@@ -30,8 +28,6 @@ router.get(
     workoutController.list
 );
 
-// Treinos do próprio membro autenticado (extra, para o painel do aluno).
-// Precisa vir antes de '/:id'.
 router.get(
     '/mine',
     authMiddleware,
@@ -39,8 +35,6 @@ router.get(
     workoutController.listMine
 );
 
-// Consulta de um treino: admin, trainer e o próprio membro do treino
-// (a verificação de "membro autorizado" é feita no service)
 router.get(
     '/:id',
     authMiddleware,
@@ -48,8 +42,6 @@ router.get(
     workoutController.findById
 );
 
-// Atualização: admin e o trainer responsável pelo treino
-// (a verificação de "trainer autorizado" é feita no service)
 router.put(
     '/:id',
     authMiddleware,
@@ -58,7 +50,6 @@ router.put(
     workoutController.update
 );
 
-// Exclusão: somente admin
 router.delete(
     '/:id',
     authMiddleware,

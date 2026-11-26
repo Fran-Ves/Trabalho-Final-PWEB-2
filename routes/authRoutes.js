@@ -11,14 +11,12 @@ const {
     loginSchema
 } = require('../validators/authValidator');
 
-// Cadastro público
 router.post(
     '/register',
     validationMiddleware(registerSchema),
     authController.register
 );
 
-// Login público
 router.post(
     '/login',
     validationMiddleware(loginSchema),

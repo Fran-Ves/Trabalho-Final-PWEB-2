@@ -19,13 +19,10 @@ function generateToken(user) {
     );
 }
 
-// Hash falso usado quando o e-mail não existe: faz o login levar o mesmo tempo
-// com e-mail inexistente e com senha errada (evita enumeração por tempo de resposta)
 const DUMMY_HASH = bcrypt.hashSync('senha-falsa-para-igualar-tempo', 12);
 
 async function register(data) {
 
-    // Verifica se o e-mail já está cadastrado (dessa vez aqui dentro)
     const existingUser = User.findByEmail(data.email);
 
     if (existingUser) {
@@ -34,10 +31,8 @@ async function register(data) {
         throw error;
     }
 
-    // Gera o hash da senha (é pra ter espaço suficiente pra não dar overflow e não ser muito lento)
     const passwordHash = await bcrypt.hash(data.password, 12);
 
-    // Cria usuário e perfil de membro na mesma transação (mas não enfia os dois ao mesmo tempo no banco)
     const transaction = db.transaction(() => {
 
         const userId = User.create(
@@ -78,7 +73,6 @@ async function login(data) {
         throw error;
     }
 
-    // Compara senha informada com o hash armazenado pra saber se o hash não deu overflow ou se a senha não bateu
     const passwordMatch = await bcrypt.compare(
         data.password,
         user.password_hash

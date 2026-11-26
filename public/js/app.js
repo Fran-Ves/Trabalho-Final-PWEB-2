@@ -1,15 +1,9 @@
-// Frontend do painel da academia (JavaScript puro, sem dependências).
-// Segurança: todo conteúdo vindo da API é inserido com textContent/createTextNode
-// (função h), nunca com innerHTML, para evitar XSS.
 (() => {
   'use strict';
 
   const $ = (selector) => document.querySelector(selector);
   const state = { token: null, user: null, member: null, view: null, seen: new Set() };
 
-  // ---------------------------------------------------------------- utilitários
-
-  // Cria elementos DOM de forma segura: h('div', {class:'x'}, 'texto', outroNo)
   function h(tag, attrs, ...children) {
     const el = document.createElement(tag);
     for (const [key, value] of Object.entries(attrs || {})) {
@@ -29,7 +23,7 @@
   function fmtDate(value) {
     if (!value) return '-';
     if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value.split('-').reverse().join('/');
-    const date = new Date(value.replace(' ', 'T') + 'Z'); // SQLite grava em UTC
+    const date = new Date(value.replace(' ', 'T') + 'Z');
     return isNaN(date) ? value : date.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
   }
 
@@ -43,7 +37,6 @@
     toastTimer = setTimeout(() => { box.hidden = true; }, 4000);
   }
 
-  // ---------------------------------------------------------------- API + faixa de status
 
   function updateStatus(method, path, res) {
     const instance = res.headers.get('X-Instance-Id');
@@ -82,7 +75,6 @@
     return data;
   }
 
-  // ---------------------------------------------------------------- sessão
 
   function saveSession() {
     sessionStorage.setItem('gym_session', JSON.stringify({ token: state.token, user: state.user }));
@@ -130,7 +122,6 @@
     navigate('workouts');
   }
 
-  // ---------------------------------------------------------------- navegação
 
   const views = { workouts: viewWorkouts, members: viewMembers, checkins: viewCheckins };
 
@@ -159,7 +150,6 @@
         h('td', {}, c && c.nodes ? h('div', { class: 'actions' }, c.nodes) : c)))))));
   }
 
-  // ---------------------------------------------------------------- dialog
 
   function openDialog(title, ...body) {
     const dialog = $('#dialog');
@@ -171,7 +161,6 @@
     return dialog;
   }
 
-  // ---------------------------------------------------------------- treinos
 
   const canEdit = (w) => state.user.role === 'admin' || w.trainer_id === state.user.id;
 
@@ -269,7 +258,6 @@
     } catch (error) { toast(error.message, true); }
   }
 
-  // ---------------------------------------------------------------- membros (admin/trainer)
 
   async function viewMembers() {
     const { members } = await api('GET', '/api/members');
@@ -312,7 +300,6 @@
     openDialog('Novo membro', form);
   }
 
-  // ---------------------------------------------------------------- check-ins
 
   const checkinTable = (checkins, withName) => checkins.length
     ? table(withName ? ['Data', 'Hora', 'Aluno'] : ['Data', 'Hora'],
@@ -344,7 +331,6 @@
       checkinTable(checkins, false));
   }
 
-  // ---------------------------------------------------------------- acesso (login / cadastro)
 
   function setAuthTab(tab) {
     const login = tab === 'login';
@@ -387,7 +373,6 @@
       return body;
     });
 
-    // Mostra de início qual réplica está respondendo
     fetch('/health').then((res) => updateStatus('GET', '/health', res)).catch(() => {});
 
     const saved = sessionStorage.getItem('gym_session');

@@ -1,7 +1,5 @@
 const instance = require('./instance');
 
-// Registra eventos de segurança em JSON (uma linha por evento), com
-// quando / onde / quem / o quê. Nunca registra senhas nem tokens.
 function securityLog(event, req, details = {}) {
 
     const entry = {

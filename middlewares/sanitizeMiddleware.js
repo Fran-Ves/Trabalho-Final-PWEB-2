@@ -1,12 +1,3 @@
-// Sanitização básica do corpo da requisição (roda ANTES da validação):
-//  - remove caracteres de controle e normaliza Unicode (NFC)
-//  - remove tags HTML (<script>, <img ...> etc.) e aplica trim
-//  - descarta chaves perigosas (__proto__, constructor, prototype)
-//  - limita a profundidade do JSON
-// Senhas não são alteradas (trim/remoção mudariam a senha escolhida).
-// A proteção principal contra XSS continua sendo a codificação na saída
-// (o frontend usa textContent) e os cabeçalhos do helmet.
-
 const CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
 const HTML_TAGS = /<\/?[a-zA-Z][^>]*>/g;
 const FORBIDDEN_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
@@ -51,7 +42,6 @@ function clean(value, key, depth) {
 
 function sanitizeMiddleware(req, res, next) {
     try {
-        // Express 5 deixa req.body indefinido quando não há corpo
         req.body = clean(req.body ?? {}, null, 0);
         next();
     } catch (error) {

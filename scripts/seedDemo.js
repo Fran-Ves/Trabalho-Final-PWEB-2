@@ -1,5 +1,3 @@
-// Cria dados de demonstração (idempotente): admin, treinador, aluno e um treino.
-// Senha de demonstração: Academia@123  (NÃO usar em produção)
 require('dotenv').config();
 
 const bcrypt = require('bcryptjs');

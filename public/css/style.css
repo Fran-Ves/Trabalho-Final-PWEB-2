@@ -27,7 +27,6 @@ p { margin: 0; }
 
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-/* ---------- Botões e campos ---------- */
 .btn {
   font: inherit; font-weight: 600; min-height: 40px; padding: 0 16px;
   border-radius: 6px; border: 1.5px solid transparent; cursor: pointer;
@@ -54,7 +53,6 @@ p { margin: 0; }
 .form-error { color: var(--danger); font-weight: 600; font-size: .9rem; }
 .hint { color: var(--muted); font-size: .875rem; margin-top: 18px; }
 
-/* ---------- Tela de acesso ---------- */
 .auth { min-height: calc(100vh - var(--bar-h)); display: grid; place-items: center; padding: 24px; }
 .auth-card {
   width: min(440px, 100%); background: var(--paper); border: 1.5px solid var(--ink);
@@ -69,7 +67,6 @@ p { margin: 0; }
 }
 .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
 
-/* ---------- Estrutura do painel ---------- */
 .app { display: grid; grid-template-columns: 250px 1fr; min-height: calc(100vh - var(--bar-h)); }
 .sidebar { background: var(--rubber); color: #e8ece9; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; }
 .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; padding: 0 10px; }
@@ -90,7 +87,6 @@ main { padding: 32px clamp(16px, 4vw, 48px); max-width: 1100px; width: 100%; }
 .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
 .page-head p { color: var(--muted); margin-top: 4px; }
 
-/* ---------- Tabelas e listas ---------- */
 .panel { background: var(--paper); border: 1.5px solid var(--line); border-radius: 8px; overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; min-width: 560px; }
 th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -109,7 +105,6 @@ tr:last-child td { border-bottom: 0; }
 .checkin-hero p { color: #c9d2cd; }
 .checkin-hero .btn { min-height: 48px; font-size: 1.05rem; }
 
-/* ---------- Diálogo, aviso e faixa de status ---------- */
 dialog { border: 1.5px solid var(--ink); border-radius: 8px; padding: 0; width: min(560px, calc(100% - 32px)); max-height: 90vh; color: var(--ink); background: var(--paper); }
 dialog::backdrop { background: rgba(20, 28, 24, .55); }
 dialog > .dialog-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--line); }
@@ -124,7 +119,6 @@ dialog > .dialog-body { padding: 22px; display: grid; gap: 14px; }
 .toast { position: fixed; right: 16px; bottom: calc(var(--bar-h) + 16px); background: var(--rubber); color: #fff; padding: 12px 18px; border-radius: 6px; max-width: min(420px, calc(100% - 32px)); z-index: 20; font-weight: 600; }
 .toast.error { background: var(--danger); }
 
-/* A faixa amarela como fita de demarcação de piso: prova visual de load balancer e cache */
 .statusbar {
   position: fixed; left: 0; right: 0; bottom: 0; height: var(--bar-h); z-index: 10;
   background: var(--tape); color: #14170f; display: flex; gap: 28px; align-items: center; padding: 0 16px;
@@ -133,7 +127,6 @@ dialog > .dialog-body { padding: 22px; display: grid; gap: 14px; }
 }
 .st-last { margin-left: auto; opacity: .8; }
 
-/* ---------- Mobile ---------- */
 @media (max-width: 760px) {
   .app { grid-template-columns: 1fr; }
   .sidebar { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px; }

@@ -25,7 +25,6 @@ function authMiddleware(req, res, next) {
 
     try {
 
-        // Algoritmo fixo (allowlist): impede "alg: none" e confusão de algoritmos
         const decoded = jwt.verify(
             token,
             process.env.JWT_SECRET,

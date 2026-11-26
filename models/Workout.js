@@ -1,6 +1,5 @@
 const db = require('../config/database');
 
-// Campos retornados nas consultas (com nome do membro e e-mail do treinador)
 const SELECT_WORKOUT = `
     SELECT
         workouts.id,

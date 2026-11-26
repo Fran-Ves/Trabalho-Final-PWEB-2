@@ -1,6 +1,3 @@
-// Esquema inicial: usuários, membros, treinos e check-ins.
-// Usa IF NOT EXISTS para também funcionar em bancos criados antes do versionamento.
-
 module.exports.up = (db) => {
     db.exec(`
         CREATE TABLE IF NOT EXISTS users (
